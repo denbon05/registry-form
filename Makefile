@@ -1,5 +1,8 @@
 install: install-deps
 
+build:
+	npm build
+
 install-deps:
 	npm ci
 
