@@ -1,21 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
-// import axios from 'axios';
+import axios from 'axios';
 import validate from './validator';
 import './RegistryForm.css';
+
+const url = 'localhost'
 
 const offDangerFor = (item = 'all') => {
   if (item === 'all') {
     const dangerFieldsEl = _.values(document.getElementsByClassName('danger'));
-    if (dangerFieldsEl) dangerFieldsEl.forEach((el) => el.classList.remove('danger'));
+    dangerFieldsEl.forEach((el) => el.classList.remove('danger'));
     const errDivElements = document.querySelectorAll('.err');
-    _.values(errDivElements).forEach((el) => el.remove());
-  } else {
-    const currentDangerFieldEl = document.getElementById(item);
-    currentDangerFieldEl.classList.remove('danger');
-    const errDivEl = currentDangerFieldEl.parentElement.querySelector('.err');
-    if (errDivEl) errDivEl.remove();
-  }
+		_.values(errDivElements).forEach((el) => el.remove());
+		return;
+	}
+	const currentDangerFieldEl = document.getElementById(item);
+	currentDangerFieldEl.classList.remove('danger');
+	const errDivEl = currentDangerFieldEl.parentElement.querySelector('.err');
+	if (errDivEl) errDivEl.remove();
 };
 
 const errorOn = (on, error = null) => {
@@ -35,7 +37,7 @@ const errorOn = (on, error = null) => {
   }
 };
 
-const sendData = (data) => Promise.resolve({ stausCode: 200, data });
+const sendData = async (data) => await axios.post(url, data);
 
 export default class extends React.Component {
   constructor(props) {
