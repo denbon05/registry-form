@@ -12,11 +12,11 @@ lint:
 fix:
 	npx eslint --fix .
 
-pretty:
-	npx prettier --write .
+format:
+	npm run format
 
 cover:
-	npm test -- --coverage --coverageProvider=v8
+	npm run test:coverage
 
 test:
 	npm test

@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:coverage": "CI=true npm test -- --env=jsdom --coverage",
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "eslintConfig": {
     "extends": [
@@ -31,12 +33,13 @@
     "@testing-library/user-event": "^12.6.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "lodash": "^4.17.20",
     "react": "^17.0.1",
-    "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
@@ -44,6 +47,7 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-classname": "^0.1.0",
     "eslint-plugin-react-hooks": "^4.2.0",
