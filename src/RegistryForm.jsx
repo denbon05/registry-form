@@ -1,23 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
-import axios from 'axios';
+// import axios from 'axios';
 import validate from './validator';
 import './RegistryForm.css';
 
-const url = 'localhost'
+// const url = 'localhost'
 
 const offDangerFor = (item = 'all') => {
   if (item === 'all') {
     const dangerFieldsEl = _.values(document.getElementsByClassName('danger'));
     dangerFieldsEl.forEach((el) => el.classList.remove('danger'));
     const errDivElements = document.querySelectorAll('.err');
-		_.values(errDivElements).forEach((el) => el.remove());
-		return;
-	}
-	const currentDangerFieldEl = document.getElementById(item);
-	currentDangerFieldEl.classList.remove('danger');
-	const errDivEl = currentDangerFieldEl.parentElement.querySelector('.err');
-	if (errDivEl) errDivEl.remove();
+    _.values(errDivElements).forEach((el) => el.remove());
+    return;
+  }
+  const currentDangerFieldEl = document.getElementById(item);
+  currentDangerFieldEl.classList.remove('danger');
+  const errDivEl = currentDangerFieldEl.parentElement.querySelector('.err');
+  if (errDivEl) errDivEl.remove();
 };
 
 const errorOn = (on, error = null) => {
@@ -37,7 +37,7 @@ const errorOn = (on, error = null) => {
   }
 };
 
-const sendData = async (data) => await axios.post(url, data);
+const sendData = async (data) => ({ statusCode: 200, data });
 
 export default class extends React.Component {
   constructor(props) {
@@ -60,11 +60,11 @@ export default class extends React.Component {
       offDangerFor('all');
       this.setState({ status: 'sending' });
       setTimeout(() => {
-				sendData(data).then((res) => {
-					console.log('response=>', res);
-					this.setState({ status: 'success', data: { username: '', password: '' } });
-				})
-			}, 500);
+        sendData(data).then((res) => {
+          console.log('response=>', res);
+          this.setState({ status: 'success', data: { username: '', password: '' } });
+        });
+      }, 500);
     } catch (error) {
       console.log('validate-message=>>', error.message);
       if (error.name === 'ValidationError') errorOn(true, error.message);
