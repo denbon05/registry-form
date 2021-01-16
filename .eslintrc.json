@@ -16,6 +16,8 @@
   "parser": "babel-eslint",
   "plugins": ["react", "react-classname", "prettier"],
   "rules": {
+		"no-underscore-dangle": [2, { "allow": ["__filename", "__dirname"] }],
+		"import/extensions": 0,
     "import/no-named-as-default": 0,
     "no-console": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],

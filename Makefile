@@ -1,7 +1,7 @@
 install: install-deps
 
 build:
-	npm build
+	npm run build
 
 install-deps:
 	npm ci
@@ -27,4 +27,4 @@ server:
 dev:
 	npm run dev
 
-.PHONY: all test clean
+.PHONY: test build server dev
