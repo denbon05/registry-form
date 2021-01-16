@@ -21,4 +21,10 @@ cover:
 test:
 	npm test
 
-.PHONY: test
+server:
+	npm run server
+
+dev:
+	npm run dev
+
+.PHONY: all test clean

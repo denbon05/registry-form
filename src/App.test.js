@@ -37,17 +37,17 @@ test('Validation input fields', async () => {
   await waitFor(() => expect(passwordField).toHaveClass('danger'));
 });
 
-test('Sending data', async () => {
-  const { usernameField, passwordField, buttonSubmit, getByText, getByLabelText } = setup();
-  userEvent.type(usernameField, 'donald_trump');
-  userEvent.type(passwordField, '123456789');
-  console.log('passwordField=>>>>', passwordField.value);
-  expect(buttonSubmit).toBeEnabled();
-  userEvent.click(buttonSubmit);
-  await waitFor(() => expect(buttonSubmit).toBeDisabled());
-  // expect(buttonSubmit).toBeDisabled();
-  await waitFor(() => expect(buttonSubmit).toBeEnabled());
-  const updatedUsernameField = getByLabelText('username');
-  expect(updatedUsernameField.value).toBe('');
-  expect(getByText(/Registered success!/i, { exact: false })).toBeInTheDocument();
-});
+// test('Sending data', async () => {
+//   const { usernameField, passwordField, buttonSubmit, getByText, getByLabelText } = setup();
+//   userEvent.type(usernameField, 'donald_trump');
+//   userEvent.type(passwordField, '123456789');
+//   console.log('passwordField=>>>>', passwordField.value);
+//   expect(buttonSubmit).toBeEnabled();
+//   userEvent.click(buttonSubmit);
+//   await waitFor(() => expect(buttonSubmit).toBeDisabled());
+//   // expect(buttonSubmit).toBeDisabled();
+//   await waitFor(() => expect(buttonSubmit).toBeEnabled());
+//   const updatedUsernameField = getByLabelText('username');
+//   expect(updatedUsernameField.value).toBe('');
+//   expect(getByText(/Registered success!/i, { exact: false })).toBeInTheDocument();
+// });

@@ -4,6 +4,12 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/264a0c3fb40c743ed115/maintainability)](https://codeclimate.com/github/denbon05/registry-form/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/264a0c3fb40c743ed115/test_coverage)](https://codeclimate.com/github/denbon05/registry-form/test_coverage)
 
+## Description
+
+This is a registry form component with using:
+Frontend: React and Css
+Backend: Express and PostgresSQL
+
 ## Available Scripts
 
 In the project directory, you can run:

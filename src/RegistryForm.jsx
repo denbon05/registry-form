@@ -1,10 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-// import axios from 'axios';
+import axios from 'axios';
 import validate from './validator';
 import './RegistryForm.css';
-
-// const url = 'localhost'
 
 const offDangerFor = (item = 'all') => {
   if (item === 'all') {
@@ -37,7 +35,27 @@ const errorOn = (on, error = null) => {
   }
 };
 
-const sendData = async (data) => ({ statusCode: 200, data });
+const sendData = async (data) => {
+  const headers = {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Access-Control-Allow-Origin': '*',
+  };
+  axios
+    .post(
+      '/users',
+      { data, headers },
+      {
+        proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 9000,
+        },
+      }
+    )
+    .then((res) => {
+      console.log('response=>', res);
+    });
+};
 
 export default class extends React.Component {
   constructor(props) {
