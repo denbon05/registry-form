@@ -27,4 +27,7 @@ server:
 dev:
 	npm run dev
 
+heroku:
+	heroku local
+
 .PHONY: test build server dev
