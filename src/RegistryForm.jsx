@@ -14,7 +14,6 @@ const sendData = async (data) => {
     { data, headers },
     {
       proxy: {
-        protocol: 'http',
         host: '127.0.0.1',
         port: 9000,
       },
@@ -52,8 +51,6 @@ export default class extends React.Component {
       this.setState({ status: 'sending', error: null });
       const res = await sendData(data);
       console.log('RESPONSE=>', res);
-      console.log('typeRES=>', typeof res);
-      console.log('res.data.error=>', res.data.error);
       const { errors } = res.data;
       if (errors) {
         this.setState({ status: 'failed', error: errors });
@@ -67,6 +64,7 @@ export default class extends React.Component {
         this.setState({ status: 'filling', error: error.message });
       }
       if (error.name === 'NetErr') this.setState({ status: 'failed', error: error.message });
+      this.setState({ status: 'failed', error: error.message });
     }
   };
 
@@ -80,6 +78,7 @@ export default class extends React.Component {
     const { status, error, data } = this.state;
     const buttonOff = status === 'sending';
     const nameInputDanger = getNameOfInput(error);
+    const inputsIds = ['username', 'password'];
     console.log('nameInputDanger-RENDER=>', nameInputDanger);
     const inputClasses = {
       username: 'input-filed',
@@ -89,7 +88,9 @@ export default class extends React.Component {
     return (
       <div className="form-container">
         <form className="form" onSubmit={this.submitForm}>
-          {status === 'failed' && nameInputDanger === 'net' && <div className="err">{error}</div>}
+          {status === 'failed' && !inputsIds.includes(nameInputDanger) && (
+            <div className="err">{error}</div>
+          )}
           {status === 'success' && <div className="success">Registered success!</div>}
           <div className="form-item">
             <label htmlFor="username">Username:</label>

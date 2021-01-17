@@ -55,12 +55,7 @@ export default () => {
       `SELECT username FROM users WHERE username = '${username}';`,
       async (err, dbRes) => {
         if (err) return console.log('err_in_query_DB->', err);
-        console.log('db-_CHECK_DUBLICATE', dbRes);
-        console.log('db_FIELDS.LENGTH', dbRes.rows.length, dbRes.rows.length > 0);
-        if (dbRes.rows.length > 0) {
-          errors.username = 'already exist';
-        }
-        console.log('errors-CHECK-DUBLICATE=>', errors);
+        if (dbRes.rows.length > 0) errors.username = 'already exist';
         if (Object.keys(errors).length > 0) {
           res.send({ errors: Object.entries(errors).map((err) => err.join(' ')) });
           return;
@@ -73,7 +68,6 @@ export default () => {
               console.log('DB_ERROR->', err);
               // throw err;
             }
-            console.log('dbRes=>', dbRes);
             await res.end();
           }
         );
