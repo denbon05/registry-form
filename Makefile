@@ -25,7 +25,7 @@ client:
 	npm run start
 
 server:
-	fuser -k 9000/tcp | npm run server
+	npm run server
 
 dev:
 	npm run dev
