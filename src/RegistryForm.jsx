@@ -70,6 +70,10 @@ export default class extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.getElementById('username').focus();
+  }
+
   submitForm = async (e) => {
     e.preventDefault();
     const { data } = this.state;
