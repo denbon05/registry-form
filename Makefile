@@ -21,8 +21,11 @@ cover:
 test:
 	npm test
 
+client:
+	npm run start
+
 server:
-	npm run server
+	fuser -k 9000/tcp | npm run server
 
 dev:
 	npm run dev
@@ -30,4 +33,7 @@ dev:
 heroku:
 	heroku local
 
-.PHONY: test build server dev
+droptable:
+	npm run droptable
+
+.PHONY: test build server dev droptable

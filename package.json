@@ -11,7 +11,8 @@
     "test:coverage": "CI=true npm test -- --env=jsdom --coverage",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "server": "nodemon server/index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\"",
+    "droptable": "node bin/drop-table.js"
   },
   "eslintConfig": {
     "extends": [
@@ -33,24 +34,23 @@
     ]
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "Express": "^3.0.1",
-    "aws-sdk": "^2.828.0",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
-    "bootstrap": "^4.5.3",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "encrypt": "0.0.1",
     "express": "^4.17.1",
+    "knex": "^0.21.15",
     "lodash": "^4.17.20",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
     "pg": "^8.5.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.4",
