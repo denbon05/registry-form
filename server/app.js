@@ -5,7 +5,7 @@ import cors from 'cors';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pg from 'pg';
-// import encrypt from './encrypt.js';
+import crypto from './encrypt.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,60 +37,48 @@ export default () => {
   client.connect();
 
   app.get('/', (req, res) => {
-    // client.query(
-    //   `INSERT INTO users (username, password) VALUES (${ussername}, ${password});`,
-    //   async (err, dbRes) => {
-    //     if (err) throw err;
-    //     const rows = [];
-    //     for (const row of dbRes.rows) {
-    //       console.log('JSON.stringify(row)=>', JSON.stringify(row));
-    //       const { name, password } = row;
-    //       rows.push(name, password);
-    //     }
-    //     const str = rows.join('');
-    //     await res.send({ data: `I received your POST request. This is what you sent me: ${str}` });
-    //   }
     res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
   });
 
   app.post('/users', (req, res) => {
     const { username, password } = req.body.data;
     console.log('req-body=>>>', req.body);
+
+    const errors = {};
+    if (!username) {
+      errors.username = "can't be blank";
+    }
+    if (!password) {
+      errors.password = "can't be blank";
+    }
     client.query(
-      `INSERT INTO users (username, password) VALUES ('${username}', '${password}');`,
+      `SELECT username FROM users WHERE username = '${username}';`,
       async (err, dbRes) => {
-        if (err) {
-          console.log('DB_ERROR->', err);
-          // throw err;
+        if (err) return console.log('err_in_query_DB->', err);
+        console.log('db-_CHECK_DUBLICATE', dbRes);
+        console.log('db_FIELDS.LENGTH', dbRes.rows.length, dbRes.rows.length > 0);
+        if (dbRes.rows.length > 0) {
+          errors.username = 'already exist';
         }
-        console.log('dbRes=>', dbRes);
-        await res.end();
+        console.log('errors-CHECK-DUBLICATE=>', errors);
+        if (Object.keys(errors).length > 0) {
+          res.send({ errors: Object.entries(errors).map((err) => err.join(' ')) });
+          return;
+        }
+
+        client.query(
+          `INSERT INTO users (username, password) VALUES ('${username}', '${crypto(password)}');`,
+          async (err, dbRes) => {
+            if (err) {
+              console.log('DB_ERROR->', err);
+              // throw err;
+            }
+            console.log('dbRes=>', dbRes);
+            await res.end();
+          }
+        );
       }
     );
-
-    // const errors = {};
-    // if (!nickname) {
-    // 	errors.nickname = "Can't be blank";
-    // } else {
-    // 	const isUniq = !users.some((user) => user.nickname === nickname);
-    // 	if (!isUniq) {
-    // 		errors.nickname = 'Already exist';
-    // 	}
-    // }
-
-    // if (!password) {
-    // 	errors.password = "Can't be blank";
-    // }
-
-    // if (Object.keys(errors).length > 0) {
-    // 	res.status(422);
-    // 	res.render('users/new', { form: req.body, errors });
-    // 	return;
-    // }
-
-    // const user = new User(nickname, encrypt(password));
-    // users.push(user);
-    // res.redirect('/');
   });
 
   return app;

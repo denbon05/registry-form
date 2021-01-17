@@ -6,5 +6,5 @@ CREATE TABLE users (
 );
 
 INSERT INTO users (username, password) VALUES
-  ('Sansa', 'passwordexample2'),
-  ('Bran', 'passwordexample2');
+  ('Sansa', '53c4d6940f67c34a02380984cff67b12474eb689cf3b3c7178ec700c443290d10ea6fd067aec0a077549472a09275e38208e9170475ed6247d73b4f'),
+  ('Bran', '4b3c89d84b6e19ab21d5e3b4287a03c87c4875f0e9bd4a13bdfd4998d083e703a014446c523caa61de21774a4d5d1a4ada3cba06cc198fd210834ff31bd31259');

@@ -4,59 +4,29 @@ import axios from 'axios';
 import validate from './validator';
 import './RegistryForm.css';
 
-const offDangerFor = (item = 'all') => {
-  if (item === 'all') {
-    const dangerFieldsEl = _.values(document.getElementsByClassName('danger'));
-    dangerFieldsEl.forEach((el) => el.classList.remove('danger'));
-    const errDivElements = document.querySelectorAll('.err');
-    _.values(errDivElements).forEach((el) => el.remove());
-    return;
-  }
-  const currentDangerFieldEl = document.getElementById(item);
-  currentDangerFieldEl.classList.remove('danger');
-  const errDivEl = currentDangerFieldEl.parentElement.querySelector('.err');
-  if (errDivEl) errDivEl.remove();
-};
-
-const errorOn = (on, error = null) => {
-  const getNameOfInput = (err) => _.head(_.words(err));
-  const nameInput = getNameOfInput(error);
-  if (!on) {
-    offDangerFor('all');
-    console.log('errOff');
-  } else {
-    offDangerFor('all');
-    const formFieldEl = document.getElementById(nameInput);
-    formFieldEl.classList.add('danger');
-    const divErrEl = document.createElement('div');
-    divErrEl.className = 'err';
-    divErrEl.textContent = error;
-    formFieldEl.parentElement.appendChild(divErrEl);
-  }
-};
-
 const sendData = async (data) => {
   const headers = {
     'Content-Type': 'application/json;charset=UTF-8',
     'Access-Control-Allow-Origin': '*',
   };
-  axios
-    .post(
-      '/users',
-      { data, headers },
-      {
-        proxy: {
-          protocol: 'http',
-          host: '127.0.0.1',
-          port: 9000,
-        },
-      }
-    )
-    .then((res) => {
-      console.log('response=>', res);
-    });
+  const res = await axios.post(
+    '/users',
+    { data, headers },
+    {
+      proxy: {
+        protocol: 'http',
+        host: '127.0.0.1',
+        port: 9000,
+      },
+    }
+  );
+  return res;
 };
 
+const getNameOfInput = (err) => {
+  if (_.isArray(err)) return 'net';
+  return _.head(_.words(err)) || null;
+};
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -79,34 +49,47 @@ export default class extends React.Component {
     const { data } = this.state;
     try {
       await validate(data);
-      offDangerFor('all');
-      this.setState({ status: 'sending' });
-      setTimeout(() => {
-        sendData(data).then((res) => {
-          console.log('response=>', res);
-          this.setState({ status: 'success', data: { username: '', password: '' } });
-        });
-      }, 500);
+      this.setState({ status: 'sending', error: null });
+      const res = await sendData(data);
+      console.log('RESPONSE=>', res);
+      console.log('typeRES=>', typeof res);
+      console.log('res.data.error=>', res.data.error);
+      const { errors } = res.data;
+      if (errors) {
+        this.setState({ status: 'failed', error: errors });
+      } else {
+        console.log('response=>', res);
+        this.setState({ status: 'success', data: { username: '', password: '' }, error: null });
+      }
     } catch (error) {
-      console.log('validate-message=>>', error.message);
-      if (error.name === 'ValidationError') errorOn(true, error.message);
-      if (error.name === 'NetErr') this.setState({ status: 'failed', error });
+      console.log('validate-message=>>', error);
+      if (error.name === 'ValidationError') {
+        this.setState({ status: 'filling', error: error.message });
+      }
+      if (error.name === 'NetErr') this.setState({ status: 'failed', error: error.message });
     }
   };
 
   handlerInput = (dataType) => ({ target }) => {
     const { data } = this.state;
-    offDangerFor(target.id);
     this.setState({ data: { ...data, [dataType]: target.value } });
   };
 
   render() {
+    console.log('state-in-RENDER=>', this.state);
     const { status, error, data } = this.state;
     const buttonOff = status === 'sending';
+    const nameInputDanger = getNameOfInput(error);
+    console.log('nameInputDanger-RENDER=>', nameInputDanger);
+    const inputClasses = {
+      username: 'input-filed',
+      password: 'input-filed',
+    };
+    if (nameInputDanger) inputClasses[nameInputDanger] = `${inputClasses[nameInputDanger]} danger`;
     return (
       <div className="form-container">
         <form className="form" onSubmit={this.submitForm}>
-          {status === 'failed' && <div className="danger">{error}</div>}
+          {status === 'failed' && nameInputDanger === 'net' && <div className="err">{error}</div>}
           {status === 'success' && <div className="success">Registered success!</div>}
           <div className="form-item">
             <label htmlFor="username">Username:</label>
@@ -114,10 +97,11 @@ export default class extends React.Component {
               value={data.username}
               onChange={this.handlerInput('username')}
               type="text"
-              className="input-filed"
+              className={inputClasses.username}
               aria-label="username"
               id="username"
             />
+            {nameInputDanger === 'username' && <div className="err">{error}</div>}
           </div>
           <div className="form-item">
             <label htmlFor="password">Password:</label>
@@ -126,9 +110,10 @@ export default class extends React.Component {
               onChange={this.handlerInput('password')}
               type="password"
               aria-label="password"
-              className="input-filed"
+              className={inputClasses.password}
               id="password"
             />
+            {nameInputDanger === 'password' && <div className="err">{error}</div>}
           </div>
 
           <div className="form-item">

@@ -15,12 +15,6 @@ fix:
 format:
 	npm run format
 
-cover:
-	npm run test:coverage
-
-test:
-	npm test
-
 client:
 	npm run start
 
