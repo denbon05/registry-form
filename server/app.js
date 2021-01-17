@@ -6,7 +6,6 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pg from 'pg';
 // import encrypt from './encrypt.js';
-// import User from './entities/User.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,9 +35,6 @@ export default () => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   client.connect();
-
-  // const users = [new User('admin', encrypt('qwerty'))];
-  // const users = [];
 
   app.get('/', (req, res) => {
     // client.query(
