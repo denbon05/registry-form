@@ -29,4 +29,4 @@ Open [http://localhost:9000](http://localhost:9000) to view it in the browser.
 
 Reset database
 
-<a href="https://drive.google.com/file/d/1yyRMK7DNHDFjJ4SOtQvPFm8pjMZuF-9C/view?usp=sharing">Demonstration</a>
+<a target="_blank" href="https://drive.google.com/file/d/1yyRMK7DNHDFjJ4SOtQvPFm8pjMZuF-9C/view?usp=sharing">Demonstration</a>
